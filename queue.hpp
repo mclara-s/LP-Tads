@@ -16,7 +16,7 @@ public:
 		return seq.getFirst();
 	}
 	bool enqueue(TYPE value) {
-		return seq.addLast();
+		return seq.addLast(value);
 	}
 	TYPE dequeue() {
 		return seq.removeFirst();

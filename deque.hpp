@@ -19,11 +19,11 @@ public:
 	}
 
 	bool pushFront(TYPE value) {
-		return seq.addFirst();
+		return seq.addFirst(value);
 	}
 
 	bool pushBack(TYPE value) {
-		return seq.addLast();
+		return seq.addLast(value);
 	}
 
 	TYPE popFront() {

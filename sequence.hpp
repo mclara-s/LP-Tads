@@ -51,6 +51,22 @@ class Sequence {
 			list.prev = n1;
 	};
 
+	void copy (const Sequence<TYPE> &s){
+		Node *aux = s.list.next;
+		while(aux != nullptr){
+			Node *n = new Node;
+			n->prev = aux->prev;
+			n->data = aux->data;
+			n->next = aux->next;
+
+			aux = aux->next;
+			if (n->prev == nullptr)
+				list.next = n;
+			if(n->next == nullptr)
+				list.prev = n;
+		}
+	}
+
 
 public:
 	/** Inicializa a sequência */
@@ -63,7 +79,9 @@ public:
 	Sequence(const Sequence<TYPE> &s);
 
 	/** Verifica se todos os elementos da sequência são iguais aos de outra sequência */
-	TYPE& operator=(const Sequence<TYPE> &s);
+	Sequence<TYPE>& operator=(const Sequence<TYPE> &s);
+
+	void clear();
 	
 	/** Verifica se a sequência está vazia */
 	bool isEmpty();

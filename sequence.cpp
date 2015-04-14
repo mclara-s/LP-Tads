@@ -8,34 +8,27 @@ Sequence<TYPE>::Sequence() {
 
 template <typename TYPE>
 Sequence<TYPE>::~Sequence() {
-	while (isEmpty() == false){
-		removeLast();
-	}
+	clear();
 }
 
 template <typename TYPE>
 Sequence<TYPE>::Sequence(const Sequence<TYPE> &s){
-	Node *aux = s.list.next;
-	while(aux != nullptr){
-		Node *n = new Node;
-		n->prev = aux->prev;
-		n->data = aux->data;
-		n->next = aux->next;
-
-		aux = aux->next;
-		if (n->prev == nullptr)
-			list.next = n;
-		if(n->next == nullptr)
-			list.prev = n;
-	}
+	copy(s);
 }
 
-//DÚVIDA QUANTO A SOBRECARGA DO OPERADOR
 template <typename TYPE>
-TYPE& Sequence<TYPE>::operator=(const Sequence<TYPE> &s){
-	//DEVO DESTRUIR A LISTA ANTERIOR E DEPOIS CRIAR UMA NOVA?
-	//SE SIM, POSSO CHAMAR O DESTRUTOR E DEPOIS UM CONSTRUTOR DE CÓPIA?
+Sequence<TYPE>& Sequence<TYPE>::operator=(const Sequence<TYPE> &s){
+	clear();
+	copy(s);
 	return *this;
+}
+
+
+template <typename TYPE>
+void Sequence<TYPE>::clear(){
+	while (isEmpty() == false){
+		removeLast();
+	}
 }
 
 template <typename TYPE>
@@ -69,10 +62,10 @@ bool Sequence<TYPE>::addFirst(const TYPE &value) {
 	}
 	else {
 		aux->next = list.next;
-		aux->data = value;
 		(list.next)->prev = aux;
 		list.next = aux;
 	}
+	aux->data = value;
 	return true;
 }
 
@@ -87,10 +80,10 @@ bool Sequence<TYPE>::addLast(const TYPE &value) {
 	}
 	else{
 		aux->prev = list.prev;
-		aux->data = value;
 		(list.prev)->next = aux;
 		list.prev = aux;
 	}
+	aux->data = value;
 	return true;
 }
 
@@ -108,7 +101,7 @@ bool Sequence<TYPE>::add(const TYPE &value, int pos) {
 			return false;
 		int i;
 		Node *aux = list.next;
-		for (i = 1; i < pos-1; i++){
+		for (i = 0; i < pos-1; i++){
 			aux = aux->next;
 		}
 		insert->next = aux->next;
@@ -167,14 +160,14 @@ TYPE Sequence<TYPE>::remove(int pos) {
 		std::cout << "nao ha elementos para remover\n";
 		value = list.data;
 	}
-	else if (pos <= 1)
+	else if (pos <= 0)
 		value = removeFirst();
 	else if (pos >= getSize())
 		value = removeLast();
 	else{
 		int i;
 		Node *aux = list.next;
-		for (i = 1; i < pos; i++){
+		for (i = 0; i < pos; i++){
 			aux = aux->next;
 		}
 		value = aux->data;
@@ -199,7 +192,7 @@ template <typename TYPE>
 TYPE Sequence<TYPE>::get(int pos) {
 	int i;
 	Node *aux = list.next;
-	for (i = 1; i < pos; i++){
+	for (i = 0; i < pos; i++){
 		aux = aux->next;
 	}
 	return aux->data;
@@ -209,7 +202,7 @@ template <typename TYPE>
 int Sequence<TYPE>::search(const TYPE &elm) {
 	int i;
 	Node *aux = list.next;
-	for (i = 1; i <= getSize(); i++){
+	for (i = 0; i < getSize(); i++){
 		if (aux->data == elm)
 			return true;
 		aux = aux->next;
@@ -308,25 +301,12 @@ void Sequence<TYPE>::sort() {
 	}
 }
 
-/*
-template <typename TYPE>
-void Sequence<TYPE>::testSwap(int pos1, int pos2){
-	Node *n1 = list.next;
-	Node *n2 = n1;
-
-	for (int i = 1; i < pos1; i++)
-		n1 = n1->next;
-	for (int i = 1; i < pos2; i++)
-		n2 = n2->next;
-
-	swap(n1, n2);
-}
-*/
 template <typename TYPE>
 void Sequence<TYPE>::print() {
 	Node *aux = list.next;
 	while (aux != nullptr){
-		std::cout << aux->data << std::endl;		
+		std::cout << aux->data << " ";		
 		aux = aux->next;
 	}
+	std::cout << std::endl;
 }

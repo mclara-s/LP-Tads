@@ -16,7 +16,7 @@ public:
 		return seq.getFirst();
 	}
 	bool push(TYPE value) {
-		return seq.addFirst();
+		return seq.addFirst(value);
 	}
 	TYPE pop() {
 		return seq.removeFirst();
